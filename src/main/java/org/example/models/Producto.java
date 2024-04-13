@@ -8,6 +8,7 @@ public class Producto {
     private Double precio;
     private Date fechaRegistro;
     private Categoria categoria;
+    private String sku;
 
     public Categoria getCategoria() {
         return categoria;
@@ -27,7 +28,9 @@ public class Producto {
                 " | " +
                 fechaRegistro+
                 " | " +
-                categoria.getNombre();
+                categoria.getNombre()+
+                " | " +
+                sku;
     }
 
     public Producto() {
@@ -70,5 +73,13 @@ public class Producto {
 
     public void setFechaRegistro(Date fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 }
