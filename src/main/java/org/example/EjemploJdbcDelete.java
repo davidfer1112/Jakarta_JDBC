@@ -13,7 +13,6 @@ import java.util.Date;
 public class EjemploJdbcDelete {
     public static void main(String[] args) {
 
-        try (Connection connection = ConexionBaseDatos.getInstance()){
 
             Repository<Producto> repository = new ProductoRepositoryImpl();
             System.out.println("\nListado de productos:");
@@ -32,9 +31,5 @@ public class EjemploJdbcDelete {
             System.out.println("\nListado de productos:");
             repository.listar().forEach(System.out::println);
 
-
-        }catch (SQLException throwables){
-            throwables.printStackTrace();
-        }
     }
 }

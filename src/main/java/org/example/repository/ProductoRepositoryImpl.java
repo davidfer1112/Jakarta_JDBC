@@ -19,7 +19,8 @@ public class ProductoRepositoryImpl implements Repository<Producto>{
     public List<Producto> listar() {
         List<Producto> productos = new ArrayList<>();
 
-        try(Statement stmt = getConnection().createStatement();
+        try(Connection connection = getConnection();
+            Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT p.* , c.nombre as categoria FROM productos " +
                     "as p inner join categorias as c ON (p.categoria_id = c.id)")){
             while (rs.next()){
@@ -40,7 +41,8 @@ public class ProductoRepositoryImpl implements Repository<Producto>{
 
         Producto producto = new Producto();
 
-        try(PreparedStatement stmt = getConnection().
+        try(Connection connection = getConnection();
+            PreparedStatement stmt = connection.
                 prepareStatement("SELECT p.*, c.nombre as categoria FROM productos as p" +
                         " inner join  categorias  as c ON (p.categoria_id = c.id) WHERE p.id = ?")){
 
@@ -72,7 +74,8 @@ public class ProductoRepositoryImpl implements Repository<Producto>{
             sql = "INSERT INTO productos (nombre, precio, categoria_id ,fecha_registro) VALUES (?, ?, ?, ?)";
         }
 
-        try (PreparedStatement stmt  = getConnection().prepareStatement(sql)){
+        try (Connection connection = getConnection();
+             PreparedStatement stmt  = connection.prepareStatement(sql)){
             stmt.setString(1, producto.getNombre());
             stmt.setDouble(2, producto.getPrecio());
             stmt.setLong(3, producto.getCategoria().getId());
@@ -95,7 +98,8 @@ public class ProductoRepositoryImpl implements Repository<Producto>{
     @Override
     public void eliminar(Long id) {
 
-        try(PreparedStatement stmt = getConnection().prepareStatement("DELETE FROM productos WHERE id = ?")){
+        try(Connection connection = getConnection();
+            PreparedStatement stmt = connection.prepareStatement("DELETE FROM productos WHERE id = ?")){
             stmt.setLong(1, id);
             stmt.executeUpdate();
 

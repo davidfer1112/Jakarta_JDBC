@@ -12,7 +12,6 @@ import java.sql.*;
 public class EjemploJdbc {
     public static void main(String[] args) {
 
-        try (Connection connection = ConexionBaseDatos.getInstance()){
 
             Repository<Producto> repository = new ProductoRepositoryImpl();
             System.out.println("\nListado de productos:");
@@ -31,16 +30,12 @@ public class EjemploJdbc {
             Categoria categoria = new Categoria();
             categoria.setId(3L);
             producto.setCategoria(categoria);
-            repository.guardar(producto);
+            //repository.guardar(producto);
             System.out.println("Producto guardado con exito");
 
             // Se imprime la lista de productos
             System.out.println("\nListado de productos:");
             repository.listar().forEach(System.out::println);
 
-
-        }catch (SQLException throwables){
-            throwables.printStackTrace();
-        }
     }
 }
