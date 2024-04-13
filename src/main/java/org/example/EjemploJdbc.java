@@ -10,7 +10,7 @@ import java.sql.*;
 
 
 public class EjemploJdbc {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 
 
             Repository<Producto> repository = new ProductoRepositoryImpl();
