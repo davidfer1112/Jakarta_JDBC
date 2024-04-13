@@ -30,7 +30,7 @@ public class EjemploJdbc {
             Categoria categoria = new Categoria();
             categoria.setId(3L);
             producto.setCategoria(categoria);
-            //repository.guardar(producto);
+            repository.guardar(producto);
             System.out.println("Producto guardado con exito");
 
             // Se imprime la lista de productos

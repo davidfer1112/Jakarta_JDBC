@@ -11,7 +11,7 @@ import java.util.List;
 public class ProductoRepositoryImpl implements Repository<Producto>{
 
     private Connection getConnection() throws SQLException {
-        return ConexionBaseDatos.getInstance();
+        return ConexionBaseDatos.getConnection();
     }
 
     // Listar
