@@ -16,7 +16,7 @@ public class ProductoRepositoryImpl implements Repository<Producto>{
 
     // Listar
     @Override
-    public List<Producto> listar() {
+    public List<Producto> listar() throws SQLException {
         List<Producto> productos = new ArrayList<>();
 
         try(Statement stmt = getConnection().createStatement();
@@ -27,8 +27,6 @@ public class ProductoRepositoryImpl implements Repository<Producto>{
                 productos.add(p);
             }
             rs.close();
-        }catch (SQLException e){
-            e.printStackTrace();
         }
 
         return productos;
@@ -36,7 +34,7 @@ public class ProductoRepositoryImpl implements Repository<Producto>{
 
     // Consultar por id
     @Override
-    public Producto porId(Long id) {
+    public Producto porId(Long id) throws SQLException {
 
         Producto producto = new Producto();
 
@@ -54,8 +52,6 @@ public class ProductoRepositoryImpl implements Repository<Producto>{
                 }
             }
 
-        }catch (SQLException e){
-            e.printStackTrace();
         }
 
         return producto;
@@ -63,44 +59,41 @@ public class ProductoRepositoryImpl implements Repository<Producto>{
 
     //insertar datos y actualizar datos
     @Override
-    public void guardar(Producto producto) {
+    public void guardar(Producto producto) throws SQLException {
 
         String sql;
         if (producto.getId() != null  && producto.getId() > 0){
-            sql = "UPDATE productos SET nombre = ?, precio = ?, categoria_id = ? WHERE id = ?";
+            sql = "UPDATE productos SET nombre = ?, precio = ?, categoria_id = ?, sku = ? WHERE id = ?";
         } else {
-            sql = "INSERT INTO productos (nombre, precio, categoria_id ,fecha_registro) VALUES (?, ?, ?, ?)";
+            sql = "INSERT INTO productos (nombre, precio, categoria_id, sku ,fecha_registro) VALUES (?, ?, ?, ?, ?)";
         }
 
         try (PreparedStatement stmt  = getConnection().prepareStatement(sql)){
             stmt.setString(1, producto.getNombre());
             stmt.setDouble(2, producto.getPrecio());
             stmt.setLong(3, producto.getCategoria().getId());
+            stmt.setString(4, producto.getSku());
 
             if (producto.getId() != null && producto.getId() > 0){
-                stmt.setLong(4, producto.getId());
+                stmt.setLong(5, producto.getId());
             } else {
-                stmt.setDate(4, new Date(producto.getFechaRegistro().getTime()));
+                stmt.setDate(5, new Date(producto.getFechaRegistro().getTime()));
             }
 
 
             stmt.executeUpdate();
-        }catch (SQLException e){
-            e.printStackTrace();
         }
 
     }
 
     //eliminar datos
     @Override
-    public void eliminar(Long id) {
+    public void eliminar(Long id) throws SQLException {
 
         try(PreparedStatement stmt = getConnection().prepareStatement("DELETE FROM productos WHERE id = ?")){
             stmt.setLong(1, id);
             stmt.executeUpdate();
 
-        }catch (SQLException e){
-            e.printStackTrace();
         }
     }
 
@@ -110,6 +103,7 @@ public class ProductoRepositoryImpl implements Repository<Producto>{
         p.setNombre(rs.getString("nombre"));
         p.setPrecio(rs.getDouble("precio"));
         p.setFechaRegistro(rs.getDate("fecha_registro"));
+        p.setSku(rs.getString("sku"));
         Categoria categoria = new Categoria();
         categoria.setId(rs.getLong("categoria_id"));
         categoria.setNombre(rs.getString("categoria"));
