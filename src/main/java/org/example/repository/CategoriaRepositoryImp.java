@@ -10,6 +10,10 @@ public class CategoriaRepositoryImp implements Repository<Categoria>{
 
     private Connection connection;
 
+    public CategoriaRepositoryImp(Connection connection) {
+        this.connection = connection;
+    }
+
     @Override
     public List<Categoria> listar() throws SQLException {
         List<Categoria> categorias = new ArrayList<>();
@@ -44,7 +48,7 @@ public class CategoriaRepositoryImp implements Repository<Categoria>{
         } else {
             sql = "INSERT INTO categorias (nombre) VALUES (?)";
         }
-        try(PreparedStatement stmt = connection.prepareStatement(sql, Statement.NO_GENERATED_KEYS)){
+        try(PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
             stmt.setString(1, categoria.getNombre());
             if (categoria.getId() != null && categoria.getId() > 0) {
                 stmt.setLong(2, categoria.getId());
