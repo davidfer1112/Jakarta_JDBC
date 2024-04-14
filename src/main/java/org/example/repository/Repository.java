@@ -1,9 +1,13 @@
 package org.example.repository;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
 public interface Repository<T> {
+
+    void setConnection(Connection connection);
+
     List<T> listar() throws SQLException;
 
     T porId(Long id) throws SQLException;
